@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proctoring System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #1a2a6c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+        }
+        
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .exam-section {
+            flex: 2;
+        }
+        
+        .monitoring-section {
+            flex: 1;
+            border-left: 2px solid #eee;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .question {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .options li {
+            padding: 10px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .options li:hover {
+            background: #e9ecef;
+        }
+        
+        .video-container {
+            width: 100%;
+            background: #1c1c1c;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        #video {
+            width: 100%;
+            display: block;
+        }
+        
+        .metrics {
+            width: 100%;
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .metric {
+            margin-bottom: 10px;
+        }
+        
+        .gauge {
+            height: 10px;
+            background: #4a4a4a;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .gauge-fill {
+            height: 100%;
+            background: #fdbb2d;
+            width: 30%;
+        }
+        
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        #start-exam {
+            background: #27ae60;
+            color: white;
+        }
+        
+        #start-exam:hover {
+            background: #219653;
+        }
+        
+        #submit-exam {
+            background: #3498db;
+            color: white;
+        }
+        
+        #submit-exam:hover {
+            background: #2980b9;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal h2 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .modal p {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .monitoring-section {
+                border-left: none;
+                border-top: 2px solid #eee;
+                padding-left: 0;
+                padding-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Secure Exam Proctoring System</h1>
+            <p>AI-powered monitoring for fair assessments</p>
+        </header>
+        
+        <div class="status-bar">
+            <div class="time">Time Remaining: <span id="timer">30:00</span></div>
+            <div class="status">Status: <span id="status">Not Started</span></div>
+        </div>
+        
+        <div class="main-content">
+            <div class="exam-section">
+                <div class="question">
+                    <h2>Question 1</h2>
+                    <p>What is the time complexity of a binary search algorithm?</p>
+                    <ul class="options">
+                        <li>A) O(n)</li>
+                        <li>B) O(n log n)</li>
+                        <li>C) O(log n)</li>
+                        <li>D) O(1)</li>
+                    </ul>
+                </div>
+                
+                <div class="question">
+                    <h2>Question 2</h2>
+                    <p>Which of the following is NOT a principle of object-oriented programming?</p>
+                    <ul class="options">
+                        <li>A) Encapsulation</li>
+                        <li>B) Inheritance</li>
+                        <li>C) Compilation</li>
+                        <li>D) Polymorphism</li>
+                    </ul>
+                </div>
+                
+                <div class="question">
+                    <h2>Question 3</h2>
+                    <p>In JavaScript, which keyword is used to declare a variable with block scope?</p>
+                    <ul class="options">
+                        <li>A) var</li>
+                        <li>B) let</li>
+                        <li>C) const</li>
+                        <li>D) variable</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="monitoring-section">
+                <h2>AI Proctoring</h2>
+                <div class="video-container">
+                    <video id="video" autoplay playsinline></video>
+                </div>
+                
+                <div class="metrics">
+                    <div class="metric">
+                        <div>Eye Deviation: <span id="eye-deviation">0%</span></div>
+                        <div class="gauge">
+                            <div class="gauge-fill" id="eye-gauge"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric">
+                        <div>Head Movement: <span id="head-movement">0%</span></div>
+                        <div class="gauge">
+                            <div class="gauge-fill" id="head-gauge"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning" id="warning-message">
+                        Warning: Please look at the screen!
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="start-exam">Start Exam</button>
+                    <button id="submit-exam">Submit Exam</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Secure Exam Proctoring System &copy; 2023 | All rights reserved</p>
+        </footer>
+    </div>
+    
+    <div class="modal" id="warning-modal">
+        <div class="modal-content">
+            <h2>Warning!</h2>
+            <p>You are looking away from the screen too frequently.</p>
+            <p>This is your final warning. The exam will be terminated if this continues.</p>
+            <button id="acknowledge-warning">Acknowledge</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="termination-modal">
+        <div class="modal-content">
+            <h2>Exam Terminated</h2>
+            <p>Your exam has been terminated due to suspicious eye movements.</p>
+            <p>Please contact your instructor for further instructions.</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const video = document.getElementById('video');
+        const startExamBtn = document.getElementById('start-exam');
+        const submitExamBtn = document.getElementById('submit-exam');
+        const eyeDeviation = document.getElementById('eye-deviation');
+        const headMovement = document.getElementById('head-movement');
+        const eyeGauge = document.getElementById('eye-gauge');
+        const headGauge = document.getElementById('head-gauge');
+        const warningMessage = document.getElementById('warning-message');
+        const warningModal = document.getElementById('warning-modal');
+        const terminationModal = document.getElementById('termination-modal');
+        const acknowledgeWarning = document.getElementById('acknowledge-warning');
+        const statusText = document.getElementById('status');
+        const timerDisplay = document.getElementById('timer');
+        
+        // State variables
+        let examStarted = false;
+        let eyeDeviationValue = 0;
+        let headMovementValue = 0;
+        let warningCount = 0;
+        let examTimer;
+        let timeLeft = 1800; // 30 minutes in seconds
+        
+        // Initialize the page
+        warningMessage.style.display = 'none';
+        submitExamBtn.disabled = true;
+        
+        // Event Listeners
+        startExamBtn.addEventListener('click', startExam);
+        submitExamBtn.addEventListener('click', submitExam);
+        acknowledgeWarning.addEventListener('click', () => {
+            warningModal.style.display = 'none';
+        });
+        
+        // Function to start the exam
+        function startExam() {
+            if (!examStarted) {
+                examStarted = true;
+                statusText.textContent = 'In Progress';
+                startExamBtn.textContent = 'Exam Started';
+                startExamBtn.disabled = true;
+                submitExamBtn.disabled = false;
+                
+                // Start camera
+                initCamera();
+                
+                // Start monitoring
+                startMonitoring();
+                
+                // Start timer
+                startTimer();
+            }
+        }
+        
+        // Function to submit the exam
+        function submitExam() {
+            examStarted = false;
+            statusText.textContent = 'Submitted';
+            clearInterval(examTimer);
+            
+            // Stop camera
+            stopCamera();
+            
+            alert('Exam submitted successfully!');
+        }
+        
+        // Initialize camera
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 640 },
+                        height: { ideal: 480 } 
+                    } 
+                });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                alert('Cannot access camera. Please check permissions.');
+            }
+        }
+        
+        // Stop camera
+        function stopCamera() {
+            const stream = video.srcObject;
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+        
+        // Start monitoring (simulated)
+        function startMonitoring() {
+            // Simulate monitoring with random values
+            setInterval(() => {
+                if (examStarted) {
+                    // Generate random values for simulation
+                    eyeDeviationValue = Math.min(100, Math.floor(Math.random() * 110));
+                    headMovementValue = Math.min(100, Math.floor(Math.random() * 105));
+                    
+                    // Update UI
+                    eyeDeviation.textContent = `${eyeDeviationValue}%`;
+                    headMovement.textContent = `${headMovementValue}%`;
+                    eyeGauge.style.width = `${eyeDeviationValue}%`;
+                    headGauge.style.width = `${headMovementValue}%`;
+                    
+                    // Change color based on value
+                    eyeGauge.style.background = eyeDeviationValue < 50 ? '#2ecc71' : 
+                                              eyeDeviationValue < 70 ? '#f39c12' : '#e74c3c';
+                    
+                    headGauge.style.background = headMovementValue < 50 ? '#2ecc71' : 
+                                               headMovementValue < 70 ? '#f39c12' : '#e74c3c';
+                    
+                    // Show warning if values are too high
+                    if (eyeDeviationValue > 70 || headMovementValue > 70) {
+                        warningMessage.style.display = 'block';
+                        
+                        // If values are critical, show warning modal
+                        if (eyeDeviationValue > 85 || headMovementValue > 85) {
+                            warningCount++;
+                            
+                            if (warningCount >= 3) {
+                                terminateExam();
+                            } else if (warningCount >= 2) {
+                                warningModal.style.display = 'flex';
+                            }
+                        }
+                    } else {
+                        warningMessage.style.display = 'none';
+                    }
+                }
+            }, 2000);
+        }
+        
+        // Terminate exam
+        function terminateExam() {
+            examStarted = false;
+            statusText.textContent = 'Terminated';
+            clearInterval(examTimer);
+            stopCamera();
+            terminationModal.style.display = 'flex';
+            submitExamBtn.disabled = true;
+        }
+        
+        // Start timer
+        function startTimer() {
+            examTimer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(examTimer);
+                    submitExam();
+                    alert('Time is up! Your exam has been submitted.');
+                } else {
+                    timeLeft--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+        
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Initial timer display
+        updateTimerDisplay();
+    </script>
+</body>
+</html>
