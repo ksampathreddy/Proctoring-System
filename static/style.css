@@ -1,0 +1,215 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+}
+
+.exam-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.status-indicator {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #e74c3c;
+    color: white;
+    font-weight: bold;
+}
+
+.status-indicator.status-active {
+    background: #27ae60;
+}
+
+.violation-counter {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.video-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.video-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#video-feed {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+}
+
+.overlay-message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.overlay-message.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay-message.terminated {
+    background: rgba(231, 76, 60, 0.9);
+}
+
+.overlay-message.completed {
+    background: rgba(39, 174, 96, 0.9);
+}
+
+.overlay-message.warning {
+    background: rgba(243, 156, 18, 0.9);
+    font-size: 1.5rem;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-start {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-start:hover:not(:disabled) {
+    background: #219653;
+}
+
+.btn-end {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-end:hover:not(:disabled) {
+    background: #c0392b;
+}
+
+.instructions {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.instructions h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+}
+
+.instructions ul {
+    list-style-position: inside;
+    margin-bottom: 20px;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+    padding-left: 10px;
+}
+
+.warning-box {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.warning-box h3 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.warning-box p {
+    color: #856404;
+}
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .exam-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
