@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Exam Proctoring</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI-Powered Exam Proctoring System</h1>
+            <div class="exam-info">
+                <div id="exam-status" class="status-indicator">Exam Not Started</div>
+                <div id="violation-count" class="violation-counter">Violations: 0/3</div>
+            </div>
+        </header>
+
+        <main>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+                    <div class="overlay-message" id="overlay-message"></div>
+                </div>
+                
+                <div class="controls">
+                    <button id="start-btn" class="btn btn-start">Start Exam</button>
+                    <button id="end-btn" class="btn btn-end" disabled>End Exam</button>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h2>Exam Rules</h2>
+                <ul>
+                    <li>Keep your face centered and visible to the camera</li>
+                    <li>Avoid excessive head movement during the exam</li>
+                    <li>Maintain silence throughout the exam duration</li>
+                    <li>Do not look away from the screen for extended periods</li>
+                    <li>The exam will automatically end after 3 violations</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <h3>⚠️ Important Warning</h3>
+                    <p>This system monitors your head movements and audio. Excessive head rotation or any detected sound will result in violations. After 3 violations, your exam will be automatically terminated.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('start-btn');
+            const endBtn = document.getElementById('end-btn');
+            const examStatus = document.getElementById('exam-status');
+            const violationCount = document.getElementById('violation-count');
+            const overlayMessage = document.getElementById('overlay-message');
+            const videoFeed = document.getElementById('video-feed');
+            
+            let statusCheckInterval;
+            
+            // Start exam
+            startBtn.addEventListener('click', function() {
+                fetch('/start_exam')
+                    .then(response => response.json())
+                    .then(data => {
+                        examStatus.textContent = 'Exam In Progress';
+                        examStatus.className = 'status-indicator status-active';
+                        startBtn.disabled = true;
+                        endBtn.disabled = false;
+                        
+                        // Start checking exam status
+                        statusCheckInterval = setInterval(checkExamStatus, 2000);
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+            
+            // End exam
+            endBtn.addEventListener('click', function() {
+                fetch('/end_exam')
+                    .then(response => response.json())
+                    .then(data => {
+                        resetExamUI();
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+            
+            // Check exam status
+            function checkExamStatus() {
+                fetch('/exam_status')
+                    .then(response => response.json())
+                    .then(data => {
+                        violationCount.textContent = `Violations: ${data.violations}/${data.max_violations}`;
+                        
+                        if (!data.active) {
+                            if (data.violations >= data.max_violations) {
+                                overlayMessage.textContent = 'EXAM TERMINATED - Too many violations';
+                                overlayMessage.className = 'overlay-message show terminated';
+                            } else {
+                                overlayMessage.textContent = 'Exam Completed';
+                                overlayMessage.className = 'overlay-message show completed';
+                            }
+                            resetExamUI();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+            
+            function resetExamUI() {
+                examStatus.textContent = 'Exam Not Started';
+                examStatus.className = 'status-indicator';
+                startBtn.disabled = false;
+                endBtn.disabled = true;
+                clearInterval(statusCheckInterval);
+            }
+            
+            // Handle page visibility change
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    overlayMessage.textContent = 'WARNING: Tab not active!';
+                    overlayMessage.className = 'overlay-message show warning';
+                } else {
+                    overlayMessage.className = 'overlay-message';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
