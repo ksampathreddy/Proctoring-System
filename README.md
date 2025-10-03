@@ -24,3 +24,14 @@ A comprehensive AI-powered exam proctoring system that monitors students during 
 ```bash
 git clone https://github.com/your-username/exam-proctoring-system.git
 cd exam-proctoring-system
+```
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+```bash
+pip install -r requirements.txt
+```
+```bash
+python app.py
+```
