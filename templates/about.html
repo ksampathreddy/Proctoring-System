@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - AI Proctoring System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .content {
+            padding: 40px;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        .about-section {
+            margin-bottom: 40px;
+        }
+        .about-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .about-section p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .tech-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: #3498db;
+        }
+        .tech-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        .features-list li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        .features-list li::before {
+            content: '✅';
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>About AI Proctoring System</h1>
+            <div class="subtitle">Ensuring Academic Integrity Through Technology</div>
+        </div>
+        
+        <div class="content">
+            <a href="/" class="back-btn">← Back to Home</a>
+            
+            <div class="about-section">
+                <h2>Our Mission</h2>
+                <p>The AI Proctoring System is designed to maintain the integrity of online examinations by leveraging artificial intelligence to monitor test-takers in real-time. Our system ensures that exams are conducted fairly and securely, providing educational institutions with reliable remote assessment tools.</p>
+            </div>
+            
+            <div class="about-section">
+                <h2>How It Works</h2>
+                <p>Our system uses advanced computer vision and audio analysis to monitor exam sessions. The AI continuously analyzes camera feed for face presence and detects any suspicious audio activity, automatically flagging potential violations to maintain exam integrity.</p>
+            </div>
+            
+            <div class="about-section">
+                <h2>Technology Stack</h2>
+                <div class="tech-stack">
+                    <div class="tech-card">
+                        <div class="tech-icon">🐍</div>
+                        <h3>Python 3.13</h3>
+                        <p>Backend Logic</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-icon">🌐</div>
+                        <h3>Flask</h3>
+                        <p>Web Framework</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-icon">⚡</div>
+                        <h3>Socket.IO</h3>
+                        <p>Real-time Communication</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-icon">🔒</div>
+                        <h3>WebRTC</h3>
+                        <p>Media Streaming</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h2>Key Features</h2>
+                <ul class="features-list">
+                    <li>Real-time face detection and monitoring</li>
+                    <li>Continuous audio activity analysis</li>
+                    <li>Automatic violation detection</li>
+                    <li>Secure exam termination</li>
+                    <li>Professional monitoring interface</li>
+                    <li>Cross-browser compatibility</li>
+                    <li>Responsive design</li>
+                    <li>Easy to deploy and manage</li>
+                </ul>
+            </div>
+            
+            <div class="about-section">
+                <h2>Privacy & Security</h2>
+                <p>We take privacy seriously. All video and audio data is processed in real-time and is not stored on our servers. The system only analyzes the data to detect violations and does not retain any personal information after the exam session ends.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>AI Proctoring System v2.0 | © 2024 All rights reserved.</p>
+            <p>Built with ❤️ for educational institutions worldwide</p>
+        </div>
+    </div>
+</body>
+</html>
