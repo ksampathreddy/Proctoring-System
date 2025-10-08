@@ -1,10 +1,5 @@
-numpy==2.1.2
-opencv-python
-pillow
-flask 
-flask-cors
-scipy>=1.14,<1.16
-# dlib
-# mediapipe
-pyaudio 
-requests
+# requirements.txt (Minimal - Python 3.13 compatible)
+flask==3.0.0
+flask-socketio==5.3.6
+python-socketio==5.10.0
+eventlet==0.33.3
