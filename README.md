@@ -2,7 +2,7 @@
 
 A comprehensive AI-powered exam proctoring system that monitors students during online exams using computer vision and audio analysis to detect suspicious behavior.
 
-## 🚀 Features
+## Features
 
 - **Real-time Head Pose Detection**: Monitors head movements and detects excessive rotation
 - **Audio Monitoring**: Detects unauthorized sounds during the exam
@@ -11,14 +11,8 @@ A comprehensive AI-powered exam proctoring system that monitors students during 
 - **Responsive Web Interface**: Clean, user-friendly dashboard
 - **Security Alerts**: Immediate feedback for rule violations
 
-## 📋 Prerequisites
 
-- Python 3.8 or higher
-- Web camera
-- Microphone
-- Modern web browser with camera/microphone access
-
-## 🛠️ Installation
+## Installation
 
 ### Step 1: Clone the Repository
 ```bash
